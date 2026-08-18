@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Attendance</title>
+
+    <style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #eef2f7;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        width: 420px;
+        max-width: 90%;
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        text-align: center;
+    }
+
+    h1 {
+        margin: 0;
+        font-size: 30px;
+        color: #222;
+    }
+
+    #clock {
+        font-size: 52px;
+        font-weight: bold;
+        margin: 15px 0 5px;
+        color: #1f2937;
+    }
+
+    #date {
+        font-size: 16px;
+        color: #6b7280;
+        margin-bottom: 25px;
+    }
+
+    button {
+        width: 100%;
+        padding: 18px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 12px;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .timein {
+        background: #16a34a;
+        color: white;
+    }
+
+    .timeout {
+        background: #dc2626;
+        color: white;
+    }
+
+    button:hover {
+        opacity: 0.9;
+    }
+
+    .record {
+        margin-top: 25px;
+        padding: 20px;
+        background: #f8fafc;
+        border-radius: 15px;
+        text-align: left;
+    }
+
+    .record-title {
+        text-align: center;
+        font-size: 19px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .record p {
+        display: flex;
+        justify-content: space-between;
+        margin: 12px 0;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .record span {
+        font-weight: bold;
+        color: #111827;
+    }
+</style>
+</head>
+
+<body>
+
+    <h1>My Attendance</h1>
+
+    <h2 id="clock"></h2>
+
+    <div id="date"></div>
+
+    <button id="timeInButton" class="timein" onclick="timeIn()">
+    TIME IN
+    </button>
+
+    <button id="timeOutButton" class="timeout" onclick="timeOut()">
+    TIME OUT
+    </button>
+
+    <div class="record">
+    <div class="record-title">Today's Attendance</div>
+
+        <p>Morning Time In: <span id="morningIn">--:--</span></p>
+
+        <p>Morning Time Out: <span id="morningOut">--:--</span></p>
+
+        <p>Afternoon Time In: <span id="afternoonIn">--:--</span></p>
+
+        <p>Afternoon Time Out: <span id="afternoonOut">--:--</span></p>
+
+    </div>
+
+<script>
+
+function today() {
+    let d = new Date();
+
+    return d.getFullYear() + "-" +
+           String(d.getMonth() + 1).padStart(2, "0") + "-" +
+           String(d.getDate()).padStart(2, "0");
+}
+
+
+function timeIn() {
+
+    let now = new Date();
+    let time = now.toLocaleTimeString();
+
+    if (now.getHours() < 12) {
+
+        if (localStorage.getItem("morningIn")) {
+            alert("Morning Time In is already recorded.");
+            return;
+        }
+
+        localStorage.setItem("morningIn", time);
+        document.getElementById("morningIn").innerText = time;
+
+    } else {
+
+        if (localStorage.getItem("afternoonIn")) {
+            alert("Afternoon Time In is already recorded.");
+            return;
+        }
+
+        localStorage.setItem("afternoonIn", time);
+        document.getElementById("afternoonIn").innerText = time;
+    }
+
+    localStorage.setItem("attendanceDate", today());
+
+    updateButtons();
+}
+
+
+function timeOut() {
+
+    let now = new Date();
+    let time = now.toLocaleTimeString();
+
+    if (now.getHours() < 12) {
+
+        if (localStorage.getItem("morningOut")) {
+            alert("Morning Time Out is already recorded.");
+            return;
+        }
+
+        localStorage.setItem("morningOut", time);
+        document.getElementById("morningOut").innerText = time;
+
+    } else {
+
+        if (localStorage.getItem("afternoonOut")) {
+            alert("Afternoon Time Out is already recorded.");
+            return;
+        }
+
+        localStorage.setItem("afternoonOut", time);
+        document.getElementById("afternoonOut").innerText = time;
+    }
+
+    localStorage.setItem("attendanceDate", today());
+
+    updateButtons();
+}
+
+function loadAttendance() {
+
+    let savedDate = localStorage.getItem("attendanceDate");
+
+    if (savedDate !== today()) {
+
+        localStorage.removeItem("morningIn");
+        localStorage.removeItem("morningOut");
+        localStorage.removeItem("afternoonIn");
+        localStorage.removeItem("afternoonOut");
+
+        localStorage.setItem("attendanceDate", today());
+    }
+
+    document.getElementById("morningIn").innerText =
+        localStorage.getItem("morningIn") || "--:--";
+
+    document.getElementById("morningOut").innerText =
+        localStorage.getItem("morningOut") || "--:--";
+
+    document.getElementById("afternoonIn").innerText =
+        localStorage.getItem("afternoonIn") || "--:--";
+
+    document.getElementById("afternoonOut").innerText =
+        localStorage.getItem("afternoonOut") || "--:--";
+}
+
+
+function updateClock() {
+
+    let now = new Date();
+
+    document.getElementById("clock").innerText =
+        now.toLocaleTimeString();
+
+    document.getElementById("date").innerText =
+        now.toLocaleDateString(undefined, {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        });
+}
+
+
+function updateButtons() {
+
+    let now = new Date();
+
+    let timeInButton = document.getElementById("timeInButton");
+    let timeOutButton = document.getElementById("timeOutButton");
+
+    if (now.getHours() < 12) {
+
+        timeInButton.disabled =
+            localStorage.getItem("morningIn") !== null;
+
+        timeOutButton.disabled =
+            localStorage.getItem("morningOut") !== null;
+
+    } else {
+
+        timeInButton.disabled =
+            localStorage.getItem("afternoonIn") !== null;
+
+        timeOutButton.disabled =
+            localStorage.getItem("afternoonOut") !== null;
+    }
+}
+
+
+loadAttendance();
+
+updateClock();
+
+updateButtons();
+
+setInterval(updateClock, 1000);
+
+</script>
+
+</body>
+</html>
