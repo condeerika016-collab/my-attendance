@@ -1,108 +1,197 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>My Attendance</title>
 
     <style>
-    * {
-        box-sizing: border-box;
-    }
+        * {
+            box-sizing: border-box;
+        }
 
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #eef2f7;
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+        body {
+            margin: 0;
+            padding: 15px;
+            font-family: Arial, sans-serif;
+            background: #eef2f7;
 
-    .container {
-        width: 420px;
-        max-width: 90%;
-        background: white;
-        padding: 30px;
-        border-radius: 20px;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-        text-align: center;
-    }
+            min-height: 100vh;
 
-    h1 {
-        margin: 0;
-        font-size: 30px;
-        color: #222;
-    }
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
 
-    #clock {
-        font-size: 52px;
-        font-weight: bold;
-        margin: 15px 0 5px;
-        color: #1f2937;
-    }
+        .container {
+            width: 100%;
+            max-width: 380px;
 
-    #date {
-        font-size: 16px;
-        color: #6b7280;
-        margin-bottom: 25px;
-    }
+            margin-top: 15px;
+            padding: 25px 20px;
 
-    button {
-        width: 100%;
-        padding: 18px;
-        margin: 8px 0;
-        border: none;
-        border-radius: 12px;
-        font-size: 20px;
-        font-weight: bold;
-        cursor: pointer;
-    }
+            background: white;
+            border-radius: 20px;
 
-    .timein {
-        background: #16a34a;
-        color: white;
-    }
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
 
-    .timeout {
-        background: #dc2626;
-        color: white;
-    }
+            text-align: center;
 
-    button:hover {
-        opacity: 0.9;
-    }
+            display: block;
+        }
 
-    .record {
-        margin-top: 25px;
-        padding: 20px;
-        background: #f8fafc;
-        border-radius: 15px;
-        text-align: left;
-    }
+        h1 {
+            display: block;
 
-    .record-title {
-        text-align: center;
-        font-size: 19px;
-        font-weight: bold;
-        margin-bottom: 15px;
-    }
+            margin: 0 0 10px 0;
 
-    .record p {
-        display: flex;
-        justify-content: space-between;
-        margin: 12px 0;
-        padding-bottom: 8px;
-        border-bottom: 1px solid #e5e7eb;
-    }
+            font-size: 28px;
+            color: #222;
+        }
 
-    .record span {
-        font-weight: bold;
-        color: #111827;
-    }
-</style>
+        #clock {
+            display: block;
+
+            margin: 10px 0 5px 0;
+
+            font-size: 42px;
+            font-weight: bold;
+
+            color: #1f2937;
+        }
+
+        #date {
+            display: block;
+
+            margin-bottom: 25px;
+
+            font-size: 15px;
+            color: #6b7280;
+        }
+
+        /* TIME IN / TIME OUT */
+
+        button {
+            display: block;
+
+            width: 100%;
+            height: 65px;
+
+            margin: 10px 0;
+
+            border: none;
+            border-radius: 14px;
+
+            font-size: 21px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .timein {
+            background: #16a34a;
+            color: white;
+        }
+
+        .timeout {
+            background: #dc2626;
+            color: white;
+        }
+
+        button:disabled {
+            background: #d1d5db;
+            color: #6b7280;
+            cursor: not-allowed;
+        }
+
+        /* ATTENDANCE RECORD */
+
+        .record {
+            display: block;
+
+            width: 100%;
+
+            margin-top: 25px;
+            padding: 20px;
+
+            background: #f8fafc;
+
+            border-radius: 15px;
+
+            text-align: left;
+        }
+
+        .record-title {
+            display: block;
+
+            text-align: center;
+
+            font-size: 19px;
+            font-weight: bold;
+
+            margin-bottom: 18px;
+
+            color: #111827;
+        }
+
+        .record p {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            width: 100%;
+
+            margin: 12px 0;
+            padding-bottom: 10px;
+
+            border-bottom: 1px solid #e5e7eb;
+
+            font-size: 15px;
+        }
+
+        .record span {
+            font-weight: bold;
+            color: #111827;
+        }
+
+        /* SMALL PHONE */
+
+        @media (max-width: 400px) {
+
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                margin-top: 5px;
+                padding: 22px 16px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            #clock {
+                font-size: 36px;
+            }
+
+            button {
+                height: 60px;
+                font-size: 19px;
+            }
+
+            .record p {
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
 
 <body>
+
+<div class="container">
 
     <h1>My Attendance</h1>
 
@@ -111,29 +200,47 @@
     <div id="date"></div>
 
     <button id="timeInButton" class="timein" onclick="timeIn()">
-    TIME IN
+        TIME IN
     </button>
 
     <button id="timeOutButton" class="timeout" onclick="timeOut()">
-    TIME OUT
+        TIME OUT
     </button>
 
     <div class="record">
-    <div class="record-title">Today's Attendance</div>
 
-        <p>Morning Time In: <span id="morningIn">--:--</span></p>
+        <div class="record-title">
+            Today's Attendance
+        </div>
 
-        <p>Morning Time Out: <span id="morningOut">--:--</span></p>
+        <p>
+            <span>Morning Time In</span>
+            <span id="morningIn">--:--</span>
+        </p>
 
-        <p>Afternoon Time In: <span id="afternoonIn">--:--</span></p>
+        <p>
+            <span>Morning Time Out</span>
+            <span id="morningOut">--:--</span>
+        </p>
 
-        <p>Afternoon Time Out: <span id="afternoonOut">--:--</span></p>
+        <p>
+            <span>Afternoon Time In</span>
+            <span id="afternoonIn">--:--</span>
+        </p>
+
+        <p>
+            <span>Afternoon Time Out</span>
+            <span id="afternoonOut">--:--</span>
+        </p>
 
     </div>
+
+</div>
 
 <script>
 
 function today() {
+
     let d = new Date();
 
     return d.getFullYear() + "-" +
@@ -155,6 +262,7 @@ function timeIn() {
         }
 
         localStorage.setItem("morningIn", time);
+
         document.getElementById("morningIn").innerText = time;
 
     } else {
@@ -165,6 +273,7 @@ function timeIn() {
         }
 
         localStorage.setItem("afternoonIn", time);
+
         document.getElementById("afternoonIn").innerText = time;
     }
 
@@ -187,6 +296,7 @@ function timeOut() {
         }
 
         localStorage.setItem("morningOut", time);
+
         document.getElementById("morningOut").innerText = time;
 
     } else {
@@ -197,6 +307,7 @@ function timeOut() {
         }
 
         localStorage.setItem("afternoonOut", time);
+
         document.getElementById("afternoonOut").innerText = time;
     }
 
@@ -204,6 +315,7 @@ function timeOut() {
 
     updateButtons();
 }
+
 
 function loadAttendance() {
 
@@ -254,8 +366,11 @@ function updateButtons() {
 
     let now = new Date();
 
-    let timeInButton = document.getElementById("timeInButton");
-    let timeOutButton = document.getElementById("timeOutButton");
+    let timeInButton =
+        document.getElementById("timeInButton");
+
+    let timeOutButton =
+        document.getElementById("timeOutButton");
 
     if (now.getHours() < 12) {
 
